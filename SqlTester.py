@@ -17,77 +17,99 @@ def update(id, day):
     s = 'UPDATE users SET '
     for x in days:
         s += x + ' = \'' + str(x in day) + '\'' + ', '
-        s += 'c' + x + ' = \'' + str(not x in day) + '\'' + ', '
-    s = s[:-2]
+        s += 'c' + x + ' = \'t\', '
+    if(',' in s):
+        s = s[:-2]
     s += ' WHERE id = \'' + str(id) + '\''
     cur.execute(s)
     conn.commit()
     conn.close()
 
-def insert(id, day):
+def insert(username, id, day):
     conn, cur = Connect()
-    s = 'INSERT INTO users Values(id ' + str(id) + ')'
+    s = 'INSERT INTO users (id, username) Values (\'' + str(id) + '\', \'' + str(username) + '\')'
+    cur.execute(s)
+    conn.commit()
+    conn.close()
+    
+def Add(id, check, day):
+    conn, cur = Connect()
+    s = 'UPDATE users SET '
+    for x in days:
+        if(x in day):
+            s += x + ' = \'' + str(check) + '\'' + ', '
+    if(',' in s):
+        s = s[:-2]
+    s += ' WHERE id = \'' + str(id) + '\''
     cur.execute(s)
     conn.commit()
     conn.close()
 
-def get(id):
+def Get(id):
     conn, cur = Connect()
     cur.execute('SELECT * from users WHERE id = \'' + str(id) + '\'')
     rows = cur.fetchall()
     conn.close()
     return rows
 
-def setID(id, arr):
-    if(len(get(id)) == 0):
-        insert(id, arr)
+def setID(username, id, arr):
+    print(id)
+    if(len(Get(id)) == 0):
+        insert(username, id, arr)
     update(id, arr)
 
-def add(id, arr):
+def CheckIn(id, check, day):
     conn, cur = Connect()
-    arr = arr.split(' ')
     s = 'UPDATE users SET '
-    for x in arr:
-        s += x + ' = \'t\'' + ', '
-        s += 'c' + x + ' = \'t\'' + ', '
-    s = s[:-2]
+    for x in days:
+        if(x in day):
+            s += 'c' + x + ' = \'' + str(not check) + '\'' + ', '
+    if(',' in s):
+        s = s[:-2]
     s += ' WHERE id = \'' + str(id) + '\''
     cur.execute(s)
     conn.commit()
     conn.close()
 
-def remove(id, arr):
+def NewDay(day = 'cmon ctue cwed cthur cfri csat csun', t = True):
     conn, cur = Connect()
-    arr = arr.split(' ')
     s = 'UPDATE users SET '
-    for x in arr:
-        s += x + ' = \'f\'' + ', '
-        s += 'c' + x + ' = \'f\'' + ', '
-    s = s[:-2]
-    s += ' WHERE id = \'' + str(id) + '\''
+    for x in days:
+        if(x in day):
+            s += 'c' + x + ' = \'' + str(t) + '\'' + ', '
+    if(',' in s):
+        s = s[:-2]
     cur.execute(s)
     conn.commit()
     conn.close()
-
-def CheckIn(id, day = days[datetime.datetime.today().weekday()]):
-    remove(id, [day])
 
 def printH(row):
-    s = "ID = " + str(row[0]) + "\n"
-    for x in range(1,8):
-        s+= week[x] + ' = ' + str(row[1]) + "\n"
+    s = "User: " + str(row[1]) + "\n"
+    for x in range(7):
+        s += week[x] + ': '
+        if(row[x+9]):
+            if(row[x + 2]):
+                if(x <= datetime.datetime.today().weekday()): 
+                    s += "Missed"
+                else:
+                    s += "To Do"
+            else:
+                s += "Off Day"
+        else:
+            s += 'Excersised'
+        s += "\n"
     s += '\n'
     return s
 
 def printID(id):
-    if(len(get(id)) == 0):
-        return "No Days Set Yet! \nUse !set <days> to set days"
     conn, cur = Connect()
-    cur.execute('SELECT * FROM users WHERE id = \'' + id + '\'')
+    cur.execute('SELECT * FROM users WHERE id = \'' + str(id) + '\'')
     rows = cur.fetchall()
     conn.close()
+    if(len(rows) == 0):
+        return "No Days Set Yet! \nUse !Set <days> to set days"
     row = rows[0]
-    return printH(row)
+    return '```' + printH(row) + '```'
 
 
 def printall():
@@ -95,21 +117,27 @@ def printall():
     cur.execute('SELECT * FROM users ORDER BY id')
     rows = cur.fetchall()
     conn.close()
+    s = ""
     for row in rows:
-        printH(row)
+        s += printH(row)
+    return s
         
-def DayGetter(id):
-    if(len(get(id)) == 0):
-        return "No Days Set Yet! \nUse !Set <days> to set days"
+def DayGetter(id, b = True):
     conn, cur = Connect()
     cur.execute('SELECT * FROM users WHERE id = \'' + id + '\'')
     rows = cur.fetchall()
     conn.close()
     row = rows[0]
     s = ''
-    for x in range(len(days)):
-        if(row[x + 1]):
-            s += week[x] + ' '
+    if(b):
+        for x in range(len(days)):
+            if(row[x + 2]):
+                s += week[x] + ' '
+    else:
+        for x in range(len(days)):
+            if(not row[x + 9]):
+                s += week[x] + ' '
+
     return s
 
 def Delete(id):
