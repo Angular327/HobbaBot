@@ -77,4 +77,3 @@ async def addW(ctx):
 #        NewDay()
 
 
-client.run('NjYyNTIyODA1MTIzOTQwMzUz.XhbwLg.a45r54WUjub2mi6zeLUYIFaim6M')
