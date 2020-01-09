@@ -1,15 +1,16 @@
 import discord
 import datetime
 from SqlTester import * 
+from Workouts import *
 from discord.ext import commands, tasks
 
-client = commands.Bot(command_prefix = '!')
+client = commands.Bot(command_prefix = '!z ', )
 days = ['mon', 'tue', 'wed', 'thur', 'fri', 'sat', 'sun']
 
 @client.event
 async def on_ready():
     print('online')
-    UpdateWeek.start()
+    #UpdateWeek.start()
 
 @client.command()
 async def set(ctx, *, days = days[datetime.datetime.today().weekday()]):
@@ -48,19 +49,32 @@ async def checkout(ctx, *, days = days[datetime.datetime.today().weekday()]):
     await ctx.send(printID(str(ctx.message.author.id)))
 
 @client.command()
-async def add(ctx, *, days = days[datetime.datetime.today().weekday()]):
-    Add(ctx.message.author.id, True, days.lower())
-    await ctx.send('Nice, let\'s do it')
-    await ctx.send('Workout Days: ' + DayGetter(str(ctx.message.author.id)))
+async def listW(ctx):
+    await ctx.send(ListW())
 
 @client.command()
-async def remove(ctx, *, days = days[datetime.datetime.today().weekday()]):
-    Add(ctx.message.author.id, False, days.lower())
-    await ctx.send('Maybe too much for little babies')
-    await ctx.send('Workout Days: ' + DayGetter(str(ctx.message.author.id)))
+async def printW(ctx, num = 0):
+    await ctx.send(PrintW(num))
+    
+@client.command()
+async def addW(ctx):
+    await ctx.send("Dm Angular to add your own workout")
+#@client.command()
+#async def add(ctx, *, days = days[datetime.datetime.today().weekday()]):
+#    Add(ctx.message.author.id, True, days.lower())
+#    await ctx.send('Nice, let\'s do it')
+#    await ctx.send('Workout Days: ' + DayGetter(str(ctx.message.author.id)))
 
-@tasks.loop(minutes = 45)
-async def UpdateWeek():
-    if(int(datetime.datetime.today().weekday()) == 1 and int(datetime.datetime.now().time().hour) == 1):
-        NewDay()
+#@client.command()
+#async def remove(ctx, *, days = days[datetime.datetime.today().weekday()]):
+#    Add(ctx.message.author.id, False, days.lower())
+#    await ctx.send('Maybe too much for little babies')
+    #await ctx.send('Workout Days: ' + DayGetter(str(ctx.message.author.id)))
 
+#@tasks.loop(minutes = 45)
+#async def UpdateWeek():
+#    if(int(datetime.datetime.today().weekday()) == 1 and int(datetime.datetime.now().time().hour) == 1):
+#        NewDay()
+
+
+client.run('NjYyNTIyODA1MTIzOTQwMzUz.XhbwLg.a45r54WUjub2mi6zeLUYIFaim6M')

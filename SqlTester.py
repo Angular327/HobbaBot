@@ -3,6 +3,12 @@ import datetime
 
 days = ['mon', 'tue', 'wed', 'thur', 'fri', 'sat', 'sun']
 week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+def Connect():
+    conn = psycopg2.connect(user = "bubdvuhlxohtqm",
+                            password = "197e19be6026819279bc05c41961cda4c65910b6aa5f682af79e257c8f5ac422",
+                            host = "ec2-174-129-33-181.compute-1.amazonaws.com",
+                            port = "5432",
+                            dbname = "d984gl6lnk8s7m")
     cur = conn.cursor()  
     return conn, cur    
 
@@ -47,7 +53,7 @@ def Get(id):
     return rows
 
 def setID(username, id, arr):
-    print(id)
+    print(username + 'Set ' + arr + ' Days.')
     if(len(Get(id)) == 0):
         insert(username, id, arr)
     update(id, arr)
@@ -82,8 +88,8 @@ def printH(row):
     for x in range(7):
         s += week[x] + ': '
         if(row[x+9]):
-            if(row[x + 2]):
-                if(x <= datetime.datetime.today().weekday()): 
+            if(row[x+ 2]):
+                if(x+2 <= datetime.datetime.today().weekday()): 
                     s += "Missed"
                 else:
                     s += "To Do"
