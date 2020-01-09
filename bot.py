@@ -3,8 +3,10 @@ import datetime
 from SqlTester import * 
 from Workouts import *
 from discord.ext import commands, tasks
+from discord.ext.commands import MemberConverter
 
 client = commands.Bot(command_prefix = '!z ', )
+client.Mconverter = MemberConverter()  # converts name/id to member object
 client.remove_command('help')
 days = ['mon', 'tue', 'wed', 'thur', 'fri', 'sat', 'sun']
 
@@ -24,7 +26,11 @@ async def delete(ctx, member : discord.Member):
     await ctx.send('Deleted user <@' + str(member.id) + '>')
 
 @client.command()
-async def get(ctx, member : discord.Member):
+async def get(ctx, member=None):
+    if member is None:
+        member = ctx.author
+    else:
+        member = await client.Mconverter.convert(ctx, member)
     await ctx.send(printID(str(member.id)))
 
 @client.command()
@@ -77,7 +83,7 @@ async def help(ctx):
     await ctx.author.send(embed = embed2)
     await ctx.send('Check out your dm\'s for command help!')
     
-client.run('NjYyNTIyODA1MTIzOTQwMzUz.XhdZAA.WuGyu-et01zolicDizSIbJOtlQQ')
+client.run('NjM3NjUyNDEyMDM5MTY4MDE0.XcbEcg.QfC3bAqNkulMLFzFcP83R5cjHDY')
 
 
 
