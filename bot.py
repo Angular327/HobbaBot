@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import discord
 import datetime
 from SqlTester import * 
@@ -78,7 +77,7 @@ async def help(ctx):
     await ctx.author.send(embed = embed2)
     await ctx.send('Check out your dm\'s for command help!')
     
-client.run('NjY0NzE0MjA0MTQ1NjQ3NjE2.XhdRmg.ReygtvYVEMk-iK0lcOLjk7LW1bc')
+client.run('NjYyNTIyODA1MTIzOTQwMzUz.XhdZAA.WuGyu-et01zolicDizSIbJOtlQQ')
 
 
 
