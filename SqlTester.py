@@ -3,12 +3,6 @@ import datetime
 
 days = ['mon', 'tue', 'wed', 'thur', 'fri', 'sat', 'sun']
 week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-def Connect():
-    conn = psycopg2.connect(user = "bubdvuhlxohtqm",
-                            password = "197e19be6026819279bc05c41961cda4c65910b6aa5f682af79e257c8f5ac422",
-                            host = "ec2-174-129-33-181.compute-1.amazonaws.com",
-                            port = "5432",
-                            dbname = "d984gl6lnk8s7m")
     cur = conn.cursor()  
     return conn, cur    
 
