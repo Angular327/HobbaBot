@@ -64,6 +64,3 @@ async def UpdateWeek():
     if(int(datetime.datetime.today().weekday()) == 1 and int(datetime.datetime.now().time().hour) == 1):
         NewDay()
 
-
-client.run('NjYyNTIyODA1MTIzOTQwMzUz.XhCdcw.8EAtoAggiQwrerwqm38rrwW6950')
-
