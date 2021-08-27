@@ -1,25 +1,22 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
-const Conversion = require('./Conversion');  
+const { Client, Intents } = require('discord.js');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on('message', msg => {
-  if (msg.content === 'ping') {
-    msg.reply('Pong!');
-  }
+client.on('interactionCreate', async interaction => {
+	if (!interaction.isCommand()) return;
+
+	const { commandName } = interaction;
+
+	if (commandName === 'ping') {
+		await interaction.reply('Pong!');
+	} else if (commandName === 'server') {
+		await interaction.reply(`Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`);
+	} else if (commandName === 'user') {
+		await interaction.reply('User info.');
+	}
 });
-
-client.on('message', message => {
-    if(!message.author.bot) {
-      //Converts
-      let conversion = Conversion.ConvertInput(message.content);
-        if(conversion.length > 0)
-            message.channel.send(conversion);
-
-    }
-});    
 
 client.login('ODgwOTQ4NDk0ODY3NzkxOTIy.YSltOA.Y3091UADJnU1FAXyQUaoMjlw5xQ');
