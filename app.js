@@ -1,22 +1,16 @@
-const { Client, Intents } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const Discord = require("discord.js");
+const intents = new Discord.Intents(32767);
+const client = new Discord.Client({ intents });
+const config = require("./config.json");
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
-
-	const { commandName } = interaction;
-
-	if (commandName === 'ping') {
-		await interaction.reply('Pong!');
-	} else if (commandName === 'server') {
-		await interaction.reply(`Server name: ${interaction.guild.name}\nTotal members: ${interaction.guild.memberCount}`);
-	} else if (commandName === 'user') {
-		await interaction.reply('User info.');
-	}
+client.on('messageCreate', message => {
+    if(message.content == "!checkin") {
+      message.reply("You have checked in");
+    }
 });
 
-client.login('ODgwOTQ4NDk0ODY3NzkxOTIy.YSltOA.Y3091UADJnU1FAXyQUaoMjlw5xQ');
+client.login(config.token);
