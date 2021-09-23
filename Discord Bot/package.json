@@ -11,11 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
-    "@discordjs/rest": "^0.1.0-canary.0",
-    "convert-units": "^2.3.4",
-    "discord-api-types": "^0.22.0",
     "discord.js": "^13.1.0",
-    "fs": "^0.0.1-security",
-    "node-cron": "^3.0.0"
+    "mongodb": "^4.1.2"
   }
 }

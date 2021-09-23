@@ -1,24 +1,19 @@
-//Config
-const Discord = require("discord.js");
-const intents = new Discord.Intents(32767);
-const client = new Discord.Client({ intents });
-const config = require("./config.json");
-var cron = require('node-cron');
+const { Client, Intents } = require('discord.js');
+const { token } = require('./config.json');
+const data = require('../Database/data');
+const workoutData = data.workouts;  
+const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 
-//On Bot Run
-client.on('ready', () => {
-  //Says the bot logs in
-  console.log(`Logged in as ${client.user.tag}!`);
-
+client.once('ready', () => {
+	console.log('Ready!');
 });
 
-//on message in chat this will be read
 client.on('messageCreate', message => {
     //if the message is !checkin
     if(message.content == "!checkin") {
-
+      workoutData.addWorkout(message.author.id, message.author.username, new Date().toLocaleString())
+      message.reply("You have checked in");
     }
 });
 
-//Login with the user token
-client.login(config.token);
+client.login(token);
